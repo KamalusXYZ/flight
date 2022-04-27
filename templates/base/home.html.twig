@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Flight index{% endblock %}
+
+{% block body %}
+    <div class="container text-center ">
+        <h1>Liste des vols</h1>
+        <div class="d-flex">
+            <div>
+                <button type="button" class="btn btn-success m-2"><a class="text-decoration-none text-white"
+                                                                     href="{{ path('app_flight_new') }}">Ajouter un
+                        vol</a>
+                </button>
+                <button type="button" class="btn btn-success m-2"><a class="text-decoration-none text-white"
+                                                                     href="{{ path('app_city_new') }}">Ajouter un
+                        ville</a>
+                </button>
+            </div>
+            <div> <button type="button" class="btn btn-success m-2"><a class="text-decoration-none text-white"
+                                                                       href="{{ path('app_flight_new') }}">Se connecter</a>
+                </button></div>
+
+        </div>
+
+
+        <table class="table bg-white rounded">
+            <thead>
+            <tr>
+                <th>Numéro de vol</th>
+                <th>Ville de départ</th>
+                <th>Ville d'arrivée</th>
+                <th>Heure de départ</th>
+                <th>Heure d'arrivée</th>
+                <th>Prix</th>
+                <th>Tarif réduit</th>
+                <th>Capacité maximale en passagers</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for flight in flights %}
+                <tr>
+                    <td>{{ flight.flightNumber }}</td>
+                    <td>{{ flight.departureCity }}</td>
+                    <td>{{ flight.arrivalCity }}</td>
+                    <td>{{ flight.departureDatetime ? flight.departureDatetime|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ flight.arrivalDateTime ? flight.arrivalDateTime|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ flight.price }} €</td>
+                    <td>{{ flight.reduction ? 'Oui' : 'Non' }}</td>
+                    <td>{{ flight.seatMax }}</td>
+                    <td>
+                        <a href="{{ path('app_flight_show', {'id': flight.id}) }}"> <span
+                                    class="fs-4 m-1">Voir</span></a>
+                        <a href="{{ path('app_flight_edit', {'id': flight.id}) }}"><span class="fs-4 m-1">Editer</span></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucun enregistrement trouvé.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
