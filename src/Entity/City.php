@@ -21,6 +21,9 @@ class City
     #[ORM\OneToMany(mappedBy: 'departureCity', targetEntity: Flight::class)]
     private $flights;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $cityImg;
+
     public function __construct()
     {
         $this->flights = new ArrayCollection();
@@ -74,6 +77,18 @@ class City
                 $flight->setDepartureCity(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCityImg(): ?string
+    {
+        return $this->cityImg;
+    }
+
+    public function setCityImg(?string $cityImg): self
+    {
+        $this->cityImg = $cityImg;
 
         return $this;
     }

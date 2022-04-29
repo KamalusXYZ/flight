@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/city')]
+#[Route('/admin/city')]
 class CityController extends AbstractController
 {
     #[Route('/', name: 'app_city_index', methods: ['GET'])]
@@ -29,6 +29,20 @@ class CityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $newFilename = $city->getName();
+            $directory = './upload/';
+
+            $file = $form['cityImg']->getData();
+            if($file){
+            $extension = $file->guessExtension();
+
+            $newFilename .= '.' . $extension;
+
+            $file->move($directory, $newFilename);
+            $city->setCityImg($directory . $newFilename);
+            }
+
+
             $cityRepository->add($city);
             return $this->redirectToRoute('app_base', [], Response::HTTP_SEE_OTHER);
         }
@@ -67,7 +81,7 @@ class CityController extends AbstractController
     #[Route('/{id}', name: 'app_city_delete', methods: ['POST'])]
     public function delete(Request $request, City $city, CityRepository $cityRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$city->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $city->getId(), $request->request->get('_token'))) {
             $cityRepository->remove($city);
         }
 

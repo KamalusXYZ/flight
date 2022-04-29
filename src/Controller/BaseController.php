@@ -12,8 +12,10 @@ class BaseController extends AbstractController
     #[Route('/', name: 'app_base')]
     public function index(FlightRepository $flightRepo): Response
     {
+
         return $this->render('base/home.html.twig', [
-            'flights' => $flightRepo->findAll(),
+            'flights' => $flightRepo->findAll()
+            //'flights' => $flightRepo->findBy(['arrivalCity' => '1'])
 
         ]);
     }

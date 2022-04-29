@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
-
+{% set promo %}
+    <img src="{{ asset('/img/reduc.png') }}" style="width:30px">
+{% endset %}
 {% block title %}Flight index{% endblock %}
 
 {% block body %}
-    <div class="container text-center ">
+    <div class="container text-center">
         <h1>Liste des vols</h1>
         <div class="d-flex">
             <div>
@@ -15,10 +17,27 @@
                                                                      href="{{ path('app_city_new') }}">Ajouter un
                         ville</a>
                 </button>
+                <button type="button" class="btn btn-warning m-2"><a class="text-decoration-none text-white"
+                                                                     href="{{ path('app_city_index') }}">Afficher les
+                        villes</a>
+                </button>
             </div>
-            <div> <button type="button" class="btn btn-success m-2"><a class="text-decoration-none text-white"
-                                                                       href="{{ path('app_flight_new') }}">Se connecter</a>
-                </button></div>
+
+            {% if app.user %}
+                <div>
+                    <button class="btn btn-danger m-2"><a class="text-decoration-none text-white"
+                                                          href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </button>
+                </div>
+
+            {% else %}
+                <div>
+                    <button class="btn btn-success m-2"><a class="text-decoration-none text-white"
+                                                           href="{{ path('app_login') }}">Se connecter</a>
+                    </button>
+                </div>
+            {% endif %}
+
 
         </div>
 
@@ -34,6 +53,8 @@
                 <th>Prix</th>
                 <th>Tarif réduit</th>
                 <th>Capacité maximale en passagers</th>
+                <th>Image de la destination</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -45,8 +66,12 @@
                     <td>{{ flight.departureDatetime ? flight.departureDatetime|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ flight.arrivalDateTime ? flight.arrivalDateTime|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ flight.price }} €</td>
-                    <td>{{ flight.reduction ? 'Oui' : 'Non' }}</td>
+                    <td>{{ flight.reduction ? promo : '' }}</td>
                     <td>{{ flight.seatMax }}</td>
+                    <td><img src="{{ asset("/upload/"~flight.arrivalCity~".jpg") }}" style="object-fit: cover"
+                             width="100px" height="100px" class="card-img-top" alt="{{ flight.arrivalCity }}"></td>
+
+
                     <td>
                         <a href="{{ path('app_flight_show', {'id': flight.id}) }}"> <span
                                     class="fs-4 m-1">Voir</span></a>

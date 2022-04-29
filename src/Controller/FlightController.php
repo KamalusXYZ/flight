@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/flight')]
+#[Route('/admin/flight')]
 class FlightController extends AbstractController
 {
     #[Route('/', name: 'app_flight_index', methods: ['GET'])]
